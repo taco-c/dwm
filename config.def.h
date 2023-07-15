@@ -77,7 +77,6 @@ static const char *volmutecmd[]  = { "pactl", "set-sink-mute",   "0", "toggle", 
 
 #include "movestack.c"
 static Key keys[] = {
-<<<<<<< HEAD
 	/* modifier         key                      function        argument */
 	{ MODKEY,           XK_Tab,                  spawn,          {.v = dmenucmd } },
 	{ MODKEY,           XK_Return,               spawn,          {.v = termcmd } },
