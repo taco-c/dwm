@@ -4,6 +4,8 @@ dwm is an extremely fast, small, and dynamic window manager for X.
 I have added the following patches:
 * [fakefullscreen](https://dwm.suckless.org/patches/fakefullscreen/)
 * [systray](https://dwm.suckless.org/patches/systray/)
+* [removeborder](https://dwm.suckless.org/patches/removeborder/)
+* [movestack](https://dwm.suckless.org/patches/movestack/)
 
 ## Requirements
 In order to build dwm you need the Xlib header files.
@@ -18,14 +20,6 @@ necessary as root):
 
 ```
 make clean install
-```
-
-### \*buntu
-```
-sudo apt-get install dwm
-sudo cp /usr/share/xsessions/dwm.desktop{,.bak}
-sudo apt-get purge dwm
-sudo mv /usr/share/xsessions/dwm.desktop{.bak,}
 ```
 
 ## Running dwm
