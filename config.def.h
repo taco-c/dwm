@@ -10,9 +10,9 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
-static const int topbar             = 1;     /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
-static const char dmenufont[]       = "monospace:size=10";
+static const int topbar             = 0;     /* 0 means bottom bar */
+static const char *fonts[]          = { "monospace:size=12" };
+static const char dmenufont[]       = "monospace:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -32,8 +32,8 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	/* class                instance  title  tags mask  isfloating  monitor */
+	{ "lotroclient64.exe",  NULL,     NULL,  0,         1,          -1 },
 };
 
 /* layout(s) */
@@ -66,7 +66,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[]    = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]     = { "alacritty", NULL };
 static const char *surfcmd[]     = { "surf-open.sh", "https://duckduckgo.com/", NULL };
+static const char *scrshootcmd[] = { "screenshot", "copy", "-s", NULL };
 static const char *suspendcmd[]  = { "systemctl", "suspend", NULL };
+static const char *explorercmd[] = { "thunar", NULL };
 
 /* volume commands */
 static const char *volupcmd[]    = { "pactl", "set-sink-volume", "0", "+5%",     NULL };
@@ -78,6 +80,7 @@ static Key keys[] = {
 	{ MODKEY,           XK_Tab,                  spawn,          {.v = dmenucmd } },
 	{ MODKEY,           XK_Return,               spawn,          {.v = termcmd } },
 	{ MODKEY,           XK_Delete,               spawn,          {.v = suspendcmd } },
+	{ MODKEY,           XK_e,                    spawn,          {.v = explorercmd } },
 	{ MODKEY,           XK_b,                    togglebar,      {0} },
 	{ MODKEY,           XK_j,                    focusstack,     {.i = +1 } },
 	{ MODKEY,           XK_k,                    focusstack,     {.i = -1 } },
@@ -89,9 +92,10 @@ static Key keys[] = {
 	{ MODKEY,           XK_p,                    view,           {0} },
 	{ MODKEY,           XK_q,                    killclient,     {0} },
 	{ MODKEY,           XK_s,                    spawn,          {.v = surfcmd } },
-	{ MODKEY,           XK_t,                    setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,           XK_f,                    setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,           XK_m,                    setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask, XK_s,                    spawn,          {.v = scrshootcmd } },
+	//{ MODKEY,           XK_t,                    setlayout,      {.v = &layouts[0]} },
+	//{ MODKEY,           XK_f,                    setlayout,      {.v = &layouts[1]} },
+	//{ MODKEY,           XK_m,                    setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,           XK_space,                setlayout,      {0} },
 	{ MODKEY|ShiftMask, XK_space,                togglefloating, {0} },
 	{ MODKEY,           XK_0,                    view,           {.ui = ~0 } },
