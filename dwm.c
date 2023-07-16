@@ -886,8 +886,6 @@ expose(XEvent *e)
 void
 focus(Client *c)
 {
-	XWindowChanges wc;
-
 	if (!c || !ISVISIBLE(c))
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
 	if (selmon->sel && selmon->sel != c)
@@ -901,11 +899,6 @@ focus(Client *c)
 		attachstack(c);
 		grabbuttons(c, 1);
 		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
-		if (!c->isfloating) {
-			wc.sibling = selmon->barwin;
-			wc.stack_mode = Below;
-			XConfigureWindow(dpy, c->win, CWSibling | CWStackMode, &wc);
-		}
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1248,7 +1241,7 @@ monocle(Monitor *m)
 	if (n > 0) /* override layout symbol */
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
-		resize(c, m->wx - c->bw, m->wy, m->ww, m->wh, False);
+		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }
 
 void
@@ -1442,26 +1435,12 @@ void
 resizeclient(Client *c, int x, int y, int w, int h)
 {
 	XWindowChanges wc;
-	unsigned int n;
-	Client *nbc;
 
 	c->oldx = c->x; c->x = wc.x = x;
 	c->oldy = c->y; c->y = wc.y = y;
 	c->oldw = c->w; c->w = wc.width = w;
 	c->oldh = c->h; c->h = wc.height = h;
 	wc.border_width = c->bw;
-
-	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
-
-	if (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL) {
-	} else {
-		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
-			wc.border_width = 0;
-			c->w = wc.width += c->bw * 2;
-			c->h = wc.height += c->bw * 2;
-		}
-	}
-
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
 	XSync(dpy, False);
